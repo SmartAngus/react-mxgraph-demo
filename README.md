@@ -1,5 +1,5 @@
 # React MXGraph Demo
-> MXGraph integrated in React application with Material UI
+> MXGraph in React application with Material UI
 
 ## Table of contents
 * [Introduction](#introduction)
@@ -10,8 +10,8 @@
     * [Application Layer](#requirements)
 
 ## Introduction
-This project is a proof of concept of integration for [MXGraph library](https://github.com/jgraph/mxgraph) in React application.  
-UI is created using [Material UI](https://material-ui.com/)
+This project is a proof of concept of how to use [MXGraph library](https://github.com/jgraph/mxgraph) in React application.  
+UI is created using [Material UI](https://material-ui.com/).  
 
 ## Screenshot
 TBA

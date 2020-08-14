@@ -4,8 +4,10 @@ const mxnSpace = require("mxgraph")()
 export default class Editor {
 
   constructor(containerSelector) {
+    this.initialized = false;
     this.containerSelector = containerSelector;
   }
+
 
   init() {
 
@@ -21,8 +23,8 @@ export default class Editor {
     this.graph = new mxnSpace.mxGraph(this.container);
 
     // Disables the built-in context menu
-    mxnSpace.mxEvent.disableContextMenu(this.container);
-    mxnSpace.mxVertexHandler.prototype.rotationEnabled = true;
+    // mxnSpace.mxEvent.disableContextMenu(this.container);
+    // mxnSpace.mxVertexHandler.prototype.rotationEnabled = true;
 
     this.graph.gridSize = 30;
 
@@ -34,22 +36,26 @@ export default class Editor {
     // graph.panningHandler.useLeftButtonForPanning = true;
     // graph.panningHandler.ignoreCell = true;
     // graph.container.style.cursor = 'move';
-    this.graph.setPanning(true);
+    // this.graph.setPanning(true);
 
     // Uncomment the following if you want the container
     // to fit the size of the graph
     // graph.setResizeContainer(true);
 
-    this.graph.collapsedImage = '';
-    this.graph.expandedImage = '';
+    // this.graph.collapsedImage = '';
+    // this.graph.expandedImage = '';
 
     // Enables rubberband selection
-    new mxnSpace.mxRubberband(this.graph);
+    // mxnSpace.mxRubberband.prototype.defaultOpacity = 100;
+    const rubberBand = new mxnSpace.mxRubberband(this.graph);
+    window.rb = rubberBand;
+    console.log(rubberBand);
 
     // Configure Zoom
     this.graph.keepSelectionVisibleOnZoom = true;
     this.graph.centerZoom = true;
-
+    
+    this.initialized = true;
   }
 
 
