@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CropSquareIcon from '@material-ui/icons/CropSquare';
+import { Editor as EditorJS, EditorContext } from '../editor';
 
 
 /**
  * Define what happens when entity is dropped on graph.
- * You can access editor via window.editor
  * 
  * @param {mxGraph} graph 
  * @param {Event} evt 
@@ -19,10 +19,9 @@ const onDrop = function (graph, evt, cell, x, y) {
     const parent = graph.getDefaultParent();
     const model = graph.getModel();
 
-
     model.beginUpdate();
     try {
-        const dimension = parseInt(window.prompt("Enter dimenions", 120))
+        const dimension = (typeof window !== "undefined") ? parseInt(window.prompt("Enter dimenions", 120)) : 120;
         graph.insertVertex(parent, null, `Square ${dimension}`, x, y, dimension, dimension);
     }
     finally {
@@ -49,21 +48,20 @@ const DragShadow = () => {
  * Define how entity will render in the sidebar
  */
 export default function Square() {
-
-    const editor = window.editor
+    const editorCtx = useContext(EditorContext)
     const eleRef = useRef(null)
 
     useEffect(() => {
-        if (!editor)
+        if (!editorCtx.initialized)
             return;
 
         // Creates the image which is used as the drag icon (preview)
-        editor.mxnSpace
+        EditorJS.mxnSpace
             .mxUtils
-            .makeDraggable(eleRef.current, editor.graph, onDrop, DragShadow(), 0, 0, true, true)
+            .makeDraggable(eleRef.current, EditorJS.graph, onDrop, DragShadow(), 0, 0, true, true)
             .setGuidesEnabled(true);
 
-    }, [editor])
+    }, [editorCtx.initialized])
 
     return (
         <ListItem button ref={eleRef}>

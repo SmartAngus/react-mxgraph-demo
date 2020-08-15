@@ -1,14 +1,13 @@
 // Import mxgraph functions
 const mxnSpace = require("mxgraph")()
 
-export default class Editor {
+class Editor {
 
   constructor(containerSelector) {
     this.initialized = false;
     this.containerSelector = containerSelector;
     this.mxnSpace = mxnSpace;
   }
-
 
   init() {
     // Resolve container element
@@ -21,7 +20,7 @@ export default class Editor {
     // Start editor configuration
     this.graph = new mxnSpace.mxGraph(this.container);
     this.graph.gridSize = 30;
-    
+
     // Configure Zoom
     this.graph.keepSelectionVisibleOnZoom = true;
     this.graph.centerZoom = true;
@@ -48,3 +47,8 @@ export default class Editor {
   }
 
 }
+
+
+const editor = new Editor('.graph-content');
+
+export default editor;

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Sidebar({ editorInitialized }) {
+export default function Sidebar() {
     const classes = useStyles()
 
     return (

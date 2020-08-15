@@ -1,3 +1,2 @@
-import Editor from './editor';
-
-export default Editor;
+export { default as Editor } from './editor';
+export { EditorContext } from './editor-context';

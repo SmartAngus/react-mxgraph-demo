@@ -1,40 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useContext } from 'react';
 import './App.css';
-import Editor from '../../editor/editor';
+import Editor from '../Editor/Editor';
 import Layout from '../Layout/Layout'
 import Sidebar from '../Sidebar/Sidebar'
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    padding: theme.spacing(3),
-  },
-}));
-
-// @TODO Switch editor to context
-// @TODO Start testing
+import { EditorContext } from '../../editor';
 
 export default function App() {
 
-  const classes = useStyles()
-  const [isEditorInitialized, setEditorInitialized] = useState(false)
-
-  useEffect(() => {
-    if (!isEditorInitialized) {
-      // Editor's gonna be accessed from multiple components and it's a separate layer
-      // It makes sense to have it available in global space
-      window.editor = new Editor('.graph-content')
-      window.editor.init()
-      window.editor.addDemoWidgets()
-      setEditorInitialized(window.editor.initialized)
-      return
-    }
-  }, [isEditorInitialized])
+  // Handle editor context setup
+  const editorCtx = useContext(EditorContext);
+  const [initialized, setInitialized] = useState(false);
+  editorCtx.initialized = initialized;
+  editorCtx.setInitialized = setInitialized;
 
   return (
-    <Layout sidebar={<Sidebar editorInitialized={isEditorInitialized} />}>
-      <div className={"graph-content " + classes.content}
-        key="content" />
+    <Layout sidebar={<Sidebar />}>
+      <Editor />
     </Layout>
   )
 };
