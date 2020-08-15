@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Layout({children, sidebar}) {
+export default function Layout({ children, sidebar }) {
   const classes = useStyles()
 
   return (
@@ -45,13 +45,12 @@ export default function Layout({children, sidebar}) {
         variant="permanent"
         classes={{
           paper: classes.drawerPaper,
-        }}
-      >
-          { sidebar }
+        }}>
+        {sidebar}
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        { children }
+        {children}
       </main>
     </div>
   )

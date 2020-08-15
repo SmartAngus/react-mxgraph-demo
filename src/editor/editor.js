@@ -6,16 +6,15 @@ export default class Editor {
   constructor(containerSelector) {
     this.initialized = false;
     this.containerSelector = containerSelector;
+    this.mxnSpace = mxnSpace;
   }
 
 
   init() {
-
     // Resolve container element
     this.container = (typeof this.containerSelector === 'string') ? document.querySelector(this.containerSelector) : this.containerSelector;
 
-    if(!this.container)
-    {
+    if (!this.container) {
       throw new Error(`Unable to find container element ${this.containerSelector}`)
     }
 
@@ -54,7 +53,8 @@ export default class Editor {
     // Configure Zoom
     this.graph.keepSelectionVisibleOnZoom = true;
     this.graph.centerZoom = true;
-    
+
+    // Set state
     this.initialized = true;
   }
 
@@ -64,11 +64,11 @@ export default class Editor {
 
     this.graph.getModel().beginUpdate();
     try {
-        const v1 = this.graph.insertVertex(parent, null, 'Hello', 20, 20, 80, 30);
-        const v2 = this.graph.insertVertex(parent, null, 'World!', 200, 150, 80, 30);
-        this.graph.insertEdge(parent, null, '', v1, v2);
+      const v1 = this.graph.insertVertex(parent, null, 'Hello', 20, 20, 80, 30);
+      const v2 = this.graph.insertVertex(parent, null, 'World!', 200, 150, 80, 30);
+      this.graph.insertEdge(parent, null, '', v1, v2);
     } finally {
-        this.graph.getModel().endUpdate();
+      this.graph.getModel().endUpdate();
     }
   }
 

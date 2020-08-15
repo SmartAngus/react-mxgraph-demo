@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import Editor from '../../editor/editor';
@@ -11,24 +11,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function App(){
+export default function App() {
   const classes = useStyles()
-  const editor = new Editor('.graph-content')
   const [isEditorInitialized, setEditorInitialized] = useState(false)
-  const sidebar = (<Sidebar editor={editor}
-                            editorInitialized={isEditorInitialized} />)
 
   useEffect(() => {
-    // console.log("[APP]", "Initializing editor...", isEditorInitialized, editor)
-    editor.init()
-    editor.addDemoWidgets()
-    setEditorInitialized(true)
-  }, [])
+    if (!isEditorInitialized) {
+      // Editor's gonna be accessed from multiple components and it's a separate layer
+      // It makes sense to have it available in global space
+      window.editor = new Editor('.graph-content')
+      window.editor.init()
+      window.editor.addDemoWidgets()
+      setEditorInitialized(window.editor.initialized)
+      return
+    }
+  }, [isEditorInitialized])
 
   return (
-    <Layout sidebar={sidebar}>
-        <div className={"graph-content " + classes.content}
-             key="content" />
+    <Layout sidebar={<Sidebar editorInitialized={isEditorInitialized} />}>
+      <div className={"graph-content " + classes.content}
+        key="content" />
     </Layout>
   )
 };
