@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
+import CropSquareIcon from '@material-ui/icons/CropSquare';
 
 
 /**
@@ -15,14 +15,15 @@ import MailIcon from '@material-ui/icons/Mail';
  * @param {int} x 
  * @param {int} y 
  */
-const OnDrop = function (graph, evt, cell, x, y) {
+const onDrop = function (graph, evt, cell, x, y) {
     const parent = graph.getDefaultParent();
     const model = graph.getModel();
 
 
     model.beginUpdate();
     try {
-        graph.insertVertex(parent, null, "Test Rectangle", x, y, 120, 120);
+        const dimension = parseInt(window.prompt("Enter dimenions", 120))
+        graph.insertVertex(parent, null, `Square ${dimension}`, x, y, dimension, dimension);
     }
     finally {
         model.endUpdate();
@@ -47,7 +48,7 @@ const DragShadow = () => {
 /**
  * Define how entity will render in the sidebar
  */
-export default function Rectangle() {
+export default function Square() {
 
     const editor = window.editor
     const eleRef = useRef(null)
@@ -59,7 +60,7 @@ export default function Rectangle() {
         // Creates the image which is used as the drag icon (preview)
         editor.mxnSpace
             .mxUtils
-            .makeDraggable(eleRef.current, editor.graph, OnDrop, DragShadow(), 0, 0, true, true)
+            .makeDraggable(eleRef.current, editor.graph, onDrop, DragShadow(), 0, 0, true, true)
             .setGuidesEnabled(true);
 
     }, [editor])
@@ -67,9 +68,9 @@ export default function Rectangle() {
     return (
         <ListItem button ref={eleRef}>
             <ListItemIcon>
-                <MailIcon />
+                <CropSquareIcon />
             </ListItemIcon>
-            <ListItemText primary={"Rectangle"} />
+            <ListItemText primary={"Square"} />
         </ListItem>
     )
 };

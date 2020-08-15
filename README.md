@@ -25,3 +25,9 @@ TBA
 
 ### Application Layer
 TBA
+
+### Components
+TBA
+
+### Entities
+TBA

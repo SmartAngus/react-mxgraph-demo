@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
-import Rectangle from '../../entities/Rectangle';
+import Square from '../../entities/Square';
 
 const useStyles = makeStyles((theme) => ({
     drawerContainer: {
@@ -19,7 +19,7 @@ export default function Sidebar({ editorInitialized }) {
             <Toolbar />
             <div className={classes.drawerContainer}>
                 <List>
-                    <Rectangle />
+                    <Square />
                 </List>
                 <Divider />
             </div>

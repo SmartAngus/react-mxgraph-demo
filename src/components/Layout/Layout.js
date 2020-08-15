@@ -36,7 +36,7 @@ export default function Layout({ children, sidebar }) {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Clipped drawer
+            MXGraph
           </Typography>
         </Toolbar>
       </AppBar>
