@@ -15,13 +15,16 @@ import { Editor as EditorJS, EditorContext } from '../editor';
  * @param {int} x 
  * @param {int} y 
  */
-const onDrop = function (graph, evt, cell, x, y) {
-    const parent = graph.getDefaultParent();
-    const model = graph.getModel();
+const onDrop = (graph:any, evt:Event, cell:any, x:number, y:number) : void => {
+    const parent:any = graph.getDefaultParent();
+    const model:any = graph.getModel();
 
     model.beginUpdate();
     try {
-        const dimension = (typeof window !== "undefined") ? parseInt(window.prompt("Enter dimenions", 120)) : 120;
+        let dimension:number = (typeof window !== "undefined") ? Number(window.prompt("Enter dimenions", "120")) : 120;
+        if(dimension <= 0)
+            dimension = 120
+
         graph.insertVertex(parent, null, `Square ${dimension}`, x, y, dimension, dimension);
     }
     finally {
@@ -33,7 +36,7 @@ const onDrop = function (graph, evt, cell, x, y) {
 /**
  * Define how entity will look while it's being dragged
  */
-const DragShadow = () => {
+const DragShadow = () : HTMLDivElement => {
 
     const dragElt = document.createElement('div');
     dragElt.style.border = 'dashed black 1px';
@@ -47,7 +50,7 @@ const DragShadow = () => {
 /**
  * Define how entity will render in the sidebar
  */
-export default function Square() {
+export default function Square() : JSX.Element {
     const editorCtx = useContext(EditorContext)
     const eleRef = useRef(null)
 

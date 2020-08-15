@@ -18,7 +18,10 @@ export default function Editor() {
     useEffect(() => {
         EditorJS.init()
         EditorJS.addDemoWidgets()
-        editorCtx.setInitialized(true)
+        if(EditorJS.initialized && editorCtx.setInitialized)
+            editorCtx.setInitialized(true)
+        else
+            throw new Error(`Unable to initialize Editor`)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

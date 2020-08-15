@@ -27,7 +27,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Layout({ children, sidebar }) {
+interface LayoutProps {
+  children?: any,
+  sidebar: JSX.Element
+}
+
+export default function Layout(props: LayoutProps) {
   const classes = useStyles()
 
   return (
@@ -46,11 +51,11 @@ export default function Layout({ children, sidebar }) {
         classes={{
           paper: classes.drawerPaper,
         }}>
-        {sidebar}
+        {props.sidebar}
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        {children}
+        {props.children}
       </main>
     </div>
   )

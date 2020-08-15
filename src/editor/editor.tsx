@@ -3,13 +3,19 @@ const mxnSpace = require("mxgraph")()
 
 class Editor {
 
-  constructor(containerSelector) {
+  initialized: boolean;
+  containerSelector: string|Element;
+  mxnSpace: any;
+  container?: Element|null;
+  graph: any; // No TS support for mxgraph
+
+  constructor(containerSelector: string|Element) {
     this.initialized = false;
     this.containerSelector = containerSelector;
     this.mxnSpace = mxnSpace;
   }
 
-  init() {
+  init(): void {
     // Resolve container element
     this.container = (typeof this.containerSelector === 'string') ? document.querySelector(this.containerSelector) : this.containerSelector;
 
@@ -33,7 +39,7 @@ class Editor {
   }
 
 
-  addDemoWidgets() {
+  addDemoWidgets(): void {
     const parent = this.graph.getDefaultParent();
 
     this.graph.getModel().beginUpdate();
