@@ -11,7 +11,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// @TODO Switch editor to context
+// @TODO Start testing
+
 export default function App() {
+
   const classes = useStyles()
   const [isEditorInitialized, setEditorInitialized] = useState(false)
 
