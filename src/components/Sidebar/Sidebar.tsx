@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import Toolbar from '@material-ui/core/Toolbar'
-import { ListItem, ListItemText, ListItemIcon, TextField, InputAdornment } from '@material-ui/core'
+import { ListItem, ListItemText, ListItemIcon, TextField, InputAdornment, IconButton } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import Inbox from '@material-ui/icons/Inbox'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Collapse from '@material-ui/core/Collapse'
+import CancelIcon from '@material-ui/icons/Cancel';
 import _ from 'lodash';
 
 import { ENTITIES_MENU, EntityMenuGroup, EntityMenuItem } from '../../entities/'
@@ -112,8 +113,38 @@ const searchInCategory = (category: EntityMenuGroup, query?: string | null): boo
 export default function Sidebar() {
     const em = _.cloneDeep(ENTITIES_MENU)
     const classes = useStyles()
+    // eslint-disable-next-line @typescript-eslint/no-array-constructor
     const [open, setOpen] = useState(Array())
+    const [searchQuery, setSearchQuery] = useState("")
     const [entitiesList, setEntitiesList] = useState(em)
+
+    const searchFieldRef = useRef<HTMLInputElement>()
+
+    useEffect(() => {
+        const result = em.filter((i: EntityMenuGroup) => { return searchInCategory(i, searchQuery) })
+        setEntitiesList(result)
+        // open all
+        const groups = result.map((i: EntityMenuGroup) => { return i.group })
+        setOpen(groups)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchQuery])
+
+
+    // Search bar shortcuts
+    useEffect(() => {
+        if(typeof document === "undefined")
+            return
+
+        document.addEventListener('keydown', (e) => {
+            // Handle ` Key
+            if(e.keyCode === 192)
+            {
+                searchFieldRef?.current?.focus()
+                e.preventDefault()
+            }
+        })
+    }, [])
 
     return (
         <>
@@ -121,24 +152,29 @@ export default function Sidebar() {
             <div className={classes.drawerContainer}>
                 <div className={classes.searchFieldWrapper}>
                     <TextField id="standard-basic"
-                        label="Search entities"
+                        label="(`)Search entities"
+                        inputRef={searchFieldRef}
                         className={classes.searchField}
-                        onChange={(e) => {
-                            console.log("SEARCH ", entitiesList, " query: ", e.target.value)
-                            const result = em.filter((i: EntityMenuGroup) => { return searchInCategory(i, e.target.value) })
-                            console.log("RESULTS", result)
-                            setEntitiesList(result)
-                            // open all
-                            const groups = result.map((i: EntityMenuGroup) => { return i.group })
-                            console.log("GROUPS", groups)
-                            setOpen(groups)
-                        }}
+                        onChange={(e) => { setSearchQuery(e.target.value) }}
+                        value={searchQuery}
+                        // helperText={"Press ` to focus"}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
                                     <SearchIcon />
                                 </InputAdornment>
                             ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={(e) => { setSearchQuery("") }}
+                                    onMouseDown={(e) => { e.preventDefault() }}
+                                  >
+                                    { (!searchQuery) ? null : <CancelIcon /> }
+                                  </IconButton>
+                                </InputAdornment>
+                            )
                         }} />
                 </div>
                 <Divider />
