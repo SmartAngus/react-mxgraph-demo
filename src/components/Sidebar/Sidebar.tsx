@@ -39,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const renderCategory = (open: string[], setOpen: Function, classes: any, category: string, key: number, children: any) => {
+const renderCategory = (open: string[], setOpen: Function, classes: any, group: EntityMenuGroup, key: number) => {
+
+    const children = group.children;
+    const category = group.group;
 
     const isOpen = () => {
         return open.indexOf(category) !== -1
@@ -120,6 +123,7 @@ export default function Sidebar() {
 
     const searchFieldRef = useRef<HTMLInputElement>()
 
+
     useEffect(() => {
         const result = em.filter((i: EntityMenuGroup) => { return searchInCategory(i, searchQuery) })
         setEntitiesList(result)
@@ -133,19 +137,23 @@ export default function Sidebar() {
 
     // Search bar shortcuts
     useEffect(() => {
+        // Collapse all by default
+        // eslint-disable-next-line @typescript-eslint/no-array-constructor
+        setOpen(Array())
+
         if(typeof document === "undefined")
             return
 
         document.addEventListener('keydown', (e) => {
             // Handle ` Key
-            if(e.keyCode === 192)
+            if(e.keyCode === 192 && (document.activeElement?.nodeName?.toLowerCase() !== "input" && document.activeElement?.nodeName?.toLowerCase() !== "textarea"))
             {
                 searchFieldRef?.current?.focus()
                 e.preventDefault()
             }
         })
     }, [])
-
+    
     return (
         <>
             <Toolbar />
@@ -184,7 +192,7 @@ export default function Sidebar() {
                     aria-labelledby="nested-list-subheader"
                     className={classes.listFixWidth}>
                     {entitiesList && entitiesList.map((k: any, i: number) => {
-                        return renderCategory(open, setOpen, classes, k.group, i, k.children)
+                        return renderCategory(open, setOpen, classes, k, i)
                     })}
                 </List>
 
