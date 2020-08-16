@@ -50,12 +50,21 @@ const DragShadow = () : HTMLDivElement => {
 /**
  * Define how entity will render in the sidebar
  */
-export default function Square() : JSX.Element {
+interface SquareProps
+{
+    label: string,
+    isOpen: boolean,
+    className: string
+}
+export default function Square(props:SquareProps) : JSX.Element {
+
+    // return <></>;
+
     const editorCtx = useContext(EditorContext)
     const eleRef = useRef(null)
 
     useEffect(() => {
-        if (!editorCtx.initialized)
+        if (!editorCtx.initialized || !props.isOpen)
             return;
 
         // Creates the image which is used as the drag icon (preview)
@@ -64,14 +73,14 @@ export default function Square() : JSX.Element {
             .makeDraggable(eleRef.current, EditorJS.graph, onDrop, DragShadow(), 0, 0, true, true)
             .setGuidesEnabled(true);
 
-    }, [editorCtx.initialized])
+    }, [editorCtx.initialized, props.isOpen])
 
     return (
-        <ListItem button ref={eleRef}>
+        <ListItem button ref={eleRef} className={props.className}>
             <ListItemIcon>
                 <CropSquareIcon />
             </ListItemIcon>
-            <ListItemText primary={"Square"} />
+            <ListItemText primary={props.label} />
         </ListItem>
     )
 };
