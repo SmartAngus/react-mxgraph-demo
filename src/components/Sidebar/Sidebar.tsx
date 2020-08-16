@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     },
     nested: {
         paddingLeft: theme.spacing(4),
+        cursor: "grab",
+        "&:active": {
+            cursor: "grabbing"
+        }
     },
 }))
 
